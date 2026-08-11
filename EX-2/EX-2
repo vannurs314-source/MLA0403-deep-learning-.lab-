@@ -1,0 +1,59 @@
+# Two-Class Confusion Matrix Analysis using Python
+
+from sklearn.metrics import (
+    confusion_matrix,
+    accuracy_score,
+    precision_score,
+    recall_score,
+    f1_score
+)
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Actual class values
+y_actual = [0, 0, 0, 0, 1, 1, 1, 1, 1, 0]
+
+# Predicted class values
+y_predicted = [0, 0, 1, 0, 1, 1, 0, 1, 1, 1]
+
+# Generate confusion matrix
+cm = confusion_matrix(y_actual, y_predicted)
+
+print("Confusion Matrix:")
+print(cm)
+
+# Extract TN, FP, FN, TP
+TN, FP, FN, TP = cm.ravel()
+
+print("\nTrue Negative (TN):", TN)
+print("False Positive (FP):", FP)
+print("False Negative (FN):", FN)
+print("True Positive (TP):", TP)
+
+# Calculate performance measures
+accuracy = accuracy_score(y_actual, y_predicted)
+precision = precision_score(y_actual, y_predicted)
+recall = recall_score(y_actual, y_predicted)
+f1 = f1_score(y_actual, y_predicted)
+
+print("\nAccuracy :", accuracy)
+print("Precision:", precision)
+print("Recall   :", recall)
+print("F1-Score :", f1)
+
+# Display confusion matrix as a heatmap
+plt.figure(figsize=(6, 4))
+
+sns.heatmap(
+    cm,
+    annot=True,
+    fmt="d",
+    cmap="Blues",
+    xticklabels=["Class 0", "Class 1"],
+    yticklabels=["Class 0", "Class 1"]
+)
+
+plt.xlabel("Predicted Class")
+plt.ylabel("Actual Class")
+plt.title("Two-Class Confusion Matrix")
+plt.show()
