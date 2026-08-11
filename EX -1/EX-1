@@ -1,0 +1,41 @@
+# Demonstration of Confusion Matrix using Python
+
+# Import required libraries
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+from sklearn.metrics import confusion_matrix, accuracy_score
+
+# Actual values
+y_actual = [0, 0, 0, 0, 1, 1, 1, 1, 1, 0]
+
+# Predicted values
+y_predicted = [0, 0, 1, 0, 1, 1, 0, 1, 1, 1]
+
+# Create confusion matrix
+cm = confusion_matrix(y_actual, y_predicted)
+
+# Display confusion matrix
+print("Confusion Matrix:")
+print(cm)
+
+# Calculate accuracy
+accuracy = accuracy_score(y_actual, y_predicted)
+print("Accuracy:", accuracy)
+
+# Visualize confusion matrix
+plt.figure(figsize=(6, 4))
+sns.heatmap(
+    cm,
+    annot=True,
+    fmt="d",
+    cmap="Blues",
+    xticklabels=["Predicted 0", "Predicted 1"],
+    yticklabels=["Actual 0", "Actual 1"]
+)
+
+plt.xlabel("Predicted Values")
+plt.ylabel("Actual Values")
+plt.title("Confusion Matrix")
+plt.show()
