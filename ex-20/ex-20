@@ -1,0 +1,98 @@
+# Neural Network Analysis for Multi-Class Data
+# Using Linear Activation
+
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, confusion_matrix
+
+# Multi-class dataset
+X = np.array([
+    [1, 1],
+    [1, 2],
+    [2, 1],
+    [2, 2],
+
+    [5, 1],
+    [6, 1],
+    [5, 2],
+    [6, 2],
+
+    [3, 5],
+    [4, 5],
+    [3, 6],
+    [4, 6]
+], dtype=float)
+
+# Three classes: 0, 1 and 2
+y = np.array([
+    0, 0, 0, 0,
+    1, 1, 1, 1,
+    2, 2, 2, 2
+])
+
+# One-hot encode target values
+Y = np.zeros((len(y), 3))
+Y[np.arange(len(y)), y] = 1
+
+# Split data
+X_train, X_test, Y_train, Y_test, y_train, y_test = train_test_split(
+    X, Y, y,
+    test_size=0.25,
+    random_state=42,
+    stratify=y
+)
+
+# Initialize weights and bias
+np.random.seed(42)
+
+W = np.random.randn(2, 3) * 0.01
+b = np.zeros(3)
+
+# Learning rate
+learning_rate = 0.01
+
+# Number of training iterations
+epochs = 5000
+
+# Train neural network
+for epoch in range(epochs):
+
+    # Linear activation
+    output = np.dot(X_train, W) + b
+
+    # Calculate error
+    error = output - Y_train
+
+    # Calculate gradients
+    dW = (2 / len(X_train)) * np.dot(X_train.T, error)
+    db = (2 / len(X_train)) * np.sum(error, axis=0)
+
+    # Update weights and bias
+    W = W - learning_rate * dW
+    b = b - learning_rate * db
+
+# Test the network
+test_output = np.dot(X_test, W) + b
+
+# Select class having the highest output
+y_pred = np.argmax(test_output, axis=1)
+
+# Calculate accuracy
+accuracy = accuracy_score(y_test, y_pred)
+
+print("Neural Network Analysis for Multi-Class Data")
+print("============================================")
+print("Number of classes:", 3)
+print("Activation       : Linear")
+
+print("\nActual Classes:")
+print(y_test)
+
+print("\nPredicted Classes:")
+print(y_pred)
+
+print("\nAccuracy:", accuracy)
+
+# Confusion matrix
+print("\nConfusion Matrix:")
+print(confusion_matrix(y_test, y_pred))
