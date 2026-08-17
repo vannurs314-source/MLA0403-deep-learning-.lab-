@@ -1,0 +1,82 @@
+# Image Segmentation using Thresholding
+# and Morphological Operations
+
+import cv2
+import matplotlib.pyplot as plt
+
+# Load image in grayscale
+image = cv2.imread("image.jpg", cv2.IMREAD_GRAYSCALE)
+
+# Check if image is loaded
+if image is None:
+    print("Error: Image not found!")
+    exit()
+
+# Apply Gaussian Blur to reduce noise
+blurred = cv2.GaussianBlur(image, (5, 5), 0)
+
+# Apply binary thresholding
+_, thresholded = cv2.threshold(
+    blurred,
+    127,
+    255,
+    cv2.THRESH_BINARY
+)
+
+# Create morphological kernel
+kernel = cv2.getStructuringElement(
+    cv2.MORPH_RECT,
+    (5, 5)
+)
+
+# Morphological Opening
+# Removes small noise
+opening = cv2.morphologyEx(
+    thresholded,
+    cv2.MORPH_OPEN,
+    kernel
+)
+
+# Morphological Closing
+# Fills small holes
+closing = cv2.morphologyEx(
+    opening,
+    cv2.MORPH_CLOSE,
+    kernel
+)
+
+# Display results
+plt.figure(figsize=(12, 8))
+
+plt.subplot(2, 2, 1)
+plt.imshow(image, cmap="gray")
+plt.title("Original Image")
+plt.axis("off")
+
+plt.subplot(2, 2, 2)
+plt.imshow(thresholded, cmap="gray")
+plt.title("Thresholded Image")
+plt.axis("off")
+
+plt.subplot(2, 2, 3)
+plt.imshow(opening, cmap="gray")
+plt.title("After Morphological Opening")
+plt.axis("off")
+
+plt.subplot(2, 2, 4)
+plt.imshow(closing, cmap="gray")
+plt.title("After Morphological Closing")
+plt.axis("off")
+
+plt.tight_layout()
+plt.show()
+
+# Save segmented image
+cv2.imwrite("segmented_image.jpg", closing)
+
+print("Image Segmentation using Thresholding")
+print("=====================================")
+print("Thresholding applied successfully.")
+print("Morphological opening applied.")
+print("Morphological closing applied.")
+print("Segmented image saved as: segmented_image.jpg")
