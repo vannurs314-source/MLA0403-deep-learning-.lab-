@@ -1,0 +1,29 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Define sigmoid function
+def sigmoid(x):
+    return 1 / (1 + np.exp(-x))
+
+# Generate values
+x = np.linspace(-10, 10, 100)
+
+# Calculate sigmoid values
+y = sigmoid(x)
+
+# Plot sigmoid function
+plt.figure(figsize=(8, 5))
+plt.plot(x, y, color="blue", linewidth=2)
+
+# Add reference lines
+plt.axhline(0.5, color="red", linestyle="--", label="Probability = 0.5")
+plt.axvline(0, color="green", linestyle="--", label="z = 0")
+
+# Labels and title
+plt.title("Sigmoid Function in Logistic Regression")
+plt.xlabel("Input (z)")
+plt.ylabel("Sigmoid Probability")
+plt.grid(True)
+plt.legend()
+
+plt.show()
