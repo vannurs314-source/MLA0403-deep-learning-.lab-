@@ -1,0 +1,85 @@
+# Demonstration of Linear Separability using Logistic Regression
+
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import accuracy_score
+
+# Create a linearly separable dataset
+X = np.array([
+    [1, 1],
+    [2, 1],
+    [2, 2],
+    [3, 2],
+    [6, 5],
+    [7, 6],
+    [8, 5],
+    [9, 7]
+])
+
+# Class labels
+y = np.array([0, 0, 0, 0, 1, 1, 1, 1])
+
+# Create Logistic Regression model
+model = LogisticRegression()
+
+# Train the model
+model.fit(X, y)
+
+# Make predictions
+y_pred = model.predict(X)
+
+# Calculate accuracy
+accuracy = accuracy_score(y, y_pred)
+
+print("Demonstration of Linear Separability")
+print("====================================")
+print("Predicted Classes:", y_pred)
+print("Actual Classes   :", y)
+print("Accuracy         :", accuracy)
+
+# Get model coefficients
+w1 = model.coef_[0][0]
+w2 = model.coef_[0][1]
+b = model.intercept_[0]
+
+print("\nLogistic Regression Equation:")
+print(f"{w1:.4f}*x1 + {w2:.4f}*x2 + {b:.4f} = 0")
+
+# Plot the data points
+plt.figure(figsize=(8, 6))
+
+plt.scatter(
+    X[y == 0, 0],
+    X[y == 0, 1],
+    color="blue",
+    label="Class 0",
+    s=100
+)
+
+plt.scatter(
+    X[y == 1, 0],
+    X[y == 1, 1],
+    color="red",
+    label="Class 1",
+    s=100
+)
+
+# Create decision boundary
+x_values = np.linspace(0, 10, 100)
+y_values = -(w1 * x_values + b) / w2
+
+plt.plot(
+    x_values,
+    y_values,
+    color="green",
+    linewidth=2,
+    label="Decision Boundary"
+)
+
+plt.xlabel("Feature 1")
+plt.ylabel("Feature 2")
+plt.title("Linear Separability using Logistic Regression")
+plt.legend()
+plt.grid(True)
+plt.show()
